@@ -1,0 +1,51 @@
+#########################################################################################################################
+#-------------------------------------------        DATA--STRUCTURES        --------------------------------------------#
+#########################################################################################################################
+# FenwickTree
+extends ./Data-Structures/fenwick
+extends ./Data-Structures/fenwick2D
+extends ./Data-Structures/sparsetable
+extends ./Data-Structures/sparsetable2D
+extends ./Data-Structures/prefixsum2D
+#########################################################################################################################
+#-------------------------------------------------       SORTING        ------------------------------------------------#
+#########################################################################################################################
+extends ./Sorting/radix
+#########################################################################################################################
+#------------------------------------------------------   MATH  --------------------------------------------------------#
+#########################################################################################################################
+#modpow
+extends ./Math/modpow
+extends ./Math/inverse
+extends ./Math/nck
+extends ./Math/gcd
+#########################################################################################################################
+#----------------------------------------------------  DEBUGGING  ------------------------------------------------------#
+#########################################################################################################################
+snippet db
+#ifdef _DEBUG
+template<typename A, typename B>
+ostream& operator<<(ostream &os, const pair<A, B> &p) {
+	return os << '(' << p.first << ", " << p.second << ')'; 
+}
+
+template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value,
+typename T_container::value_type>::type>
+ostream& operator<<(ostream &os, const T_container &v) {
+	os << '{'; string sep;
+	for (const T &x : v) os << sep << x, sep = ", ";
+	return os << '}';
+}
+
+void dbg() { cerr << endl; }
+template<typename Head, typename... Tail>
+void dbg(Head H, Tail... T) {
+	cerr << H; cerr << (sizeof...(T)? ", " : "]"); dbg(T...); 
+}
+
+#define dbg(...) cerr << "LINE(" << __LINE__ << ") -> [" << #__VA_ARGS__ << "]: [", dbg(__VA_ARGS__)
+#else 
+#define dbg(...)
+#endif
+
+endsnippet

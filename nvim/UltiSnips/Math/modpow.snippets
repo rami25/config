@@ -1,0 +1,14 @@
+snippet mp
+int64_t mpow(int64_t x, int64_t y, int64_t mod = ${1:mod}) {
+	int64_t res = 1;
+	for(; y; x = x * x % mod, y >>= 1)
+		if(y & 1) res = res * x % mod;
+	return res;
+}
+endsnippet
+
+snippet power
+template<typename T> T power(T a, T b) { ${1: }
+	return !b ? 1 : power(a * a , b / 2) * (b & 1 ? a : 1);
+}
+endsnippet
