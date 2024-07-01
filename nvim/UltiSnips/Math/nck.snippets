@@ -1,0 +1,15 @@
+snippet nck
+const int N = ${1:};
+int fac[N+1], ifac[N+1], inv[N+1];
+const auto init = [] (int x = N) -> auto {
+	fac[0] = ifac[0] = inv[1] = 1;
+	for(int i = 2; i <= x; i++) inv[i] = (ll) (mod - mod / i) * inv[mod % i] % mod;
+	for(int i = 1; i <= x; i++) fac[i] = (ll) fac[i - 1] * i % mod, ifac[i] = (ll) ifac[i - 1] * inv[i] % mod;
+	return 0;
+}();
+
+int nck(int x, int y) {
+	return x < y || y < 0 ? 0 : (ll) fac[x] * ifac[y] % mod * ifac[x - y] % mod;
+}
+
+endsnippet
