@@ -1,0 +1,19 @@
+# clangd-config.yaml
+
+# Additional compiler arguments
+ExtraClangArgs:
+  - "-std=c++17"
+  - "-I/path/to/include1"
+  - "-I/path/to/include2"
+
+# Header search paths
+HeaderSearchPaths:
+  - "/usr/include"
+  - "/path/to/custom/headers"
+
+# Completion options
+Completion:
+  # Enable or disable various completion features
+  EnableSnippets: true
+  EnableIndex: true
+  EnablePatterns: true
