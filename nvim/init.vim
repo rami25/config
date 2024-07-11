@@ -7,8 +7,8 @@
 :set softtabstop=4
 :set mouse=a
 imap jk <Esc>
-imap nl '\n'
-imap NL '\n'
+imap nl "\n"
+imap NL "\n"
 noremap <TAB> %
 
 noremap zz :set foldmethod=syntax<CR>
@@ -75,14 +75,24 @@ autocmd BufReadPre,FileReadPre *.py colorscheme solarized8_high
 "c++ file compiling
 nnoremap <F10> <ESC> :w <CR> :!g++ -std=c++17 -Wall -Wextra -Wshadow -fsanitize=address -D_DEBUG -O2 % -o %< && ./%< <CR>
 
-command! ToggleTerm call ToggleTerminal()
-function! ToggleTerminal() 
+"hterm
+command! ToggleHTerm call ToggleHTerminal()
+function! ToggleHTerminal() 
 	w | below new | term 
 	exec 'resize 10'
 	exec 'setlocal nornu nonu'
 endfunction
-nnoremap <F11> :ToggleTerm <CR> <A-a>
-inoremap <F11> <C-o>:ToggleTerm <CR> 
+nnoremap <F11> :ToggleHTerm <CR> <A-a>
+inoremap <F11> <C-o>:ToggleHTerm <CR> 
+
+"vterm
+command! ToggleVTerm call ToggleVTerminal()
+function! ToggleVTerminal() 
+	w | rightbelow vnew | vertical resize 60 | term 
+	exec 'setlocal nornu nonu'
+endfunction
+nnoremap <F12> :ToggleVTerm <CR> <A-a>
+inoremap <F12> <C-o>:ToggleVTerm <CR> 
 
 "Clipboard configuration
 let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
