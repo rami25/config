@@ -1,44 +1,80 @@
 snippet fen
-template <class T = int> struct fenwick { ${0: }
-    vector<T> bit, val;
-    int n;
+template <class T = int> struct fenwick { ${0: } // 0 or 1-indexed, doesn't matter
+	vector<T> bit, val;
+	int n;
 
-    fenwick() {};
+	fenwick() {};
 
-    fenwick(int N) {
-        n = N+1; 
-        bit.resize(n+1);
-        val.resize(n+1);
-    }
+	fenwick(int N) {
+		n = N+1; 
+		bit.resize(n+1);
+		val.resize(n+1);
+	}
 
-	fenwick(vector<T> ar){ // 0-indexed
-		n = (int)ar.size();
+	fenwick(vector<T> ar){ 
+		n = int(ar.size());
 		val = ar;
 		bit = ar; bit.insert(bit.begin(), 0);
-		for(int i = 1; i <= n; i++){
-			int p = i+(i&-i);
-			if(p <= n) bit[p] += bit[i];
+		for(int pos = 1; pos <= n; pos++){
+			int parent = pos+(pos&-pos);
+			if(parent <= n) bit[parent] += bit[pos];
 		}
 	}
 
-    void add(int pos, T delta) {
-        val[pos] += delta;
-        for (pos++; pos <= n; pos += pos&-pos) bit[pos] += delta;
-    }
+	void add(int pos, T delta) {
+		val[pos] += delta;
+		for (pos++; pos <= n; pos += pos&-pos) bit[pos] += delta;
+	}
 
-    void set(int pos, T v) {
-        add(pos, v - val[pos]);
-    }
+	void add(int l, int r, T delta) {
+		add(l, delta);
+		add(r+1, -delta);
+	}
 
-    T query(int pos) {
-        T res = 0;
-        for (pos++; pos; pos -= pos&-pos) res += bit[pos];
-        return res;
-    }
+	void set(int pos, T v) {
+		add(pos, v - val[pos]);
+	}
 
-    T query(int l, int r) { 
-        return query(r) - query(l-1);
-   }
+	T get(int pos) {
+		return val[pos];
+	}
+
+	T query(int pos) {
+		T res = 0;
+		for (pos++; pos; pos -= pos&-pos) res += bit[pos];
+		return res;
+	}
+
+	T query(int l, int r) { // return sum between [l, r]
+		return query(r) - query(l-1);
+	}
 };
 
+endsnippet
+
+snippet bit
+template <class T> class BIT { ${0: }
+  private:
+	int size;
+	vector<T> bit;
+	vector<T> arr;
+
+  public:
+	BIT(int size) : size(size), bit(size + 1), arr(size) {}
+
+	void set(int ind, T val) { add(ind, val - arr[ind]); }
+
+	void add(int ind, T val) {
+		arr[ind] += val;
+		ind++;
+		for (; ind <= size; ind += ind & -ind) { bit[ind] += val; }
+	}
+
+	T pref_sum(int ind) {
+		ind++;
+		T total = 0;
+		for (; ind > 0; ind -= ind & -ind) { total += bit[ind]; }
+		return total;
+	}
+};
 endsnippet

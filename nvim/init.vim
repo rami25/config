@@ -5,11 +5,15 @@
 :set shiftwidth=4
 :set smarttab
 :set softtabstop=4
-:set mouse=a
+:set mouse=a 
 imap jk <Esc>
+tnoremap jk <C-\><C-n>
 imap nl "\n"
 imap NL "\n"
 noremap <TAB> %
+nnoremap <C-w> <C-w>w 
+tnoremap <C-d> :q<CR> 
+tnoremap <C-d> <C-\><C-n>:q<CR>
 
 noremap zz :set foldmethod=syntax<CR>
 set foldmethod=syntax
@@ -22,7 +26,7 @@ Plug 'http://github.com/tpope/vim-surround' " Surrounding ysw)
 " Plug 'https://github.com/preservim/nerdtree' " NerdTree
 Plug 'https://github.com/tpope/vim-commentary' " For Commenting gcc & gc
 Plug 'https://github.com/vim-airline/vim-airline' " Status bar
-" Plug 'https://github.com/vim-airline/vim-airline-themes'
+Plug 'https://github.com/vim-airline/vim-airline-themes'
 Plug 'https://github.com/ap/vim-css-color' " CSS Color Preview
 Plug 'https://github.com/rafi/awesome-vim-colorschemes' " Retro Scheme
 Plug 'https://github.com/neoclide/coc.nvim'  " Auto Completion
@@ -50,6 +54,8 @@ inoremap <silent><expr> <c-@> coc#refresh()
 let g:coc_global_extensions = ['coc-clangd']
 let g:coc_disable_startup_warning = 1
 
+" let g:airline_left_sep = '>'
+" let g:airline_right_sep = '<'
 
 "fzf
 noremap <silent> <C-f> :Files<CR>

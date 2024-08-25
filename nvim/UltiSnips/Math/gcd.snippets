@@ -1,6 +1,5 @@
 
 snippet gcd
-template<typename T>
-T gcd(T a, T b) { return !a ? b : gcd(b % a, a); }
+template <typename T = int> T gcd(T a, T b) { return !a ? b : gcd(b % a, a); }
 
 endsnippet

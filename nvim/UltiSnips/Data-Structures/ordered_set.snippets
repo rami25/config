@@ -1,0 +1,48 @@
+snippet os
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T, class Compare = less<T>>
+using ordered_set = tree<T, null_type, Compare, rb_tree_tag,tree_order_statistics_node_update>;
+endsnippet
+
+snippet oms
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T, class Compare = less<T>>
+using ordered_set = tree<T, null_type, Compare, rb_tree_tag,tree_order_statistics_node_update>;
+template <typename T, bool UseGreater = false> struct ordered_multiset { ${1: } 
+    ordered_set<pair<T, int>,
+	typename conditional<UseGreater, greater<pair<T,int>>, less<pair<T,int>>>::type> ost;
+    map<T, int> freq;
+ 
+    void insert(T val) {
+		ost.insert(make_pair(val, ++freq[val]));
+	}
+ 
+    void erase(T val) {
+		ost.erase(make_pair(val, freq[val]--));
+	}
+ 
+    int order_of_key(T val) {
+		return ost.order_of_key(make_pair(UseGreater? val+1 : val, -1));
+	}
+ 
+    T find_by_order(int pos) {
+		return ost.find_by_order(pos)->first;
+	}
+ 
+    int size() {
+		return ost.size();
+	}
+ 
+    bool empty() {
+		return ost.empty();
+	}
+
+	void print() {
+		for(auto [a, b] : ost)
+			cout << a << " ";
+		cout << "\n";
+	}
+};
+endsnippet

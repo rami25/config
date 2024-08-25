@@ -1,7 +1,7 @@
 snippet st
 template <class T = int> struct sparseTable { // 0-indexed
     T op(T a, T b) {
-        return ${1:min}(a, b);
+        return ${0:min}(a, b);
     } 
 
     int n;
@@ -10,10 +10,10 @@ template <class T = int> struct sparseTable { // 0-indexed
     sparseTable() {}
 
     sparseTable(vector<T> v) {
-        n = v.size();
+        n = int(v.size());
         st = vector<vector<T>>(__lg(n)+1, vector<T>(n));
         st[0] = v;
-        for (int i=1; i<st.size(); i++) {
+        for (int i=1; i<int(st.size()); i++) {
             for (int j=0; j+(1<<i)<=n; j++) st[i][j] = op(st[i-1][j], st[i-1][j+(1<<(i-1))]);
         }
     } 
@@ -22,6 +22,72 @@ template <class T = int> struct sparseTable { // 0-indexed
         int sz = __lg(r-l+1);
         return op(st[sz][l], st[sz][r-(1<<sz)+1]);
     }
+};
+
+endsnippet
+
+snippet dst
+template <typename T = int> struct DST { // 0-indexed
+	T op (T a, T b) const {
+		return ${0:min}(a,b);
+	}
+	int n;
+	vector<vector<T>> mat;
+
+	DST () {}
+
+	DST (const vector<T>& a) : n(int(a.size())) {
+		mat.push_back(a);
+		for (int p = 1; (1 << p) < n; p++) {
+			mat.emplace_back(n);
+			for (int mid = 1 << p; mid < n; mid += 1 << (p + 1)) {
+				mat[p][mid - 1] = a[mid - 1];
+				for (int j = mid - 2; j >= mid - (1 << p); j--) {
+					mat[p][j] = op(a[j], mat[p][j + 1]);
+				}
+				mat[p][mid] = a[mid];
+				for (int j = mid + 1; j < min(n, mid + (1 << p)); j++) {
+					mat[p][j] = op(mat[p][j - 1], a[j]);
+				}
+			}
+		}
+	}
+
+	T query (int l, int r) const { // [l, r)
+	  assert(0 <= l && l < r && r <= n);
+	  if (r - l == 1) {
+		return mat[0][l];
+	  }
+	  int p = bit_width(unsigned(l ^ (r - 1))) - 1;
+	  return op(mat[p][l], mat[p][r - 1]);
+	}
+
+	int bit_width(unsigned x) const {
+		return x == 0 ? 0 : 32 - __builtin_clz(x);
+	}
+};
+endsnippet
+
+snippet rmq
+template <class T = int> struct RMQ { ${0: }// 0-based
+	vector<vector<T>> rmq;
+  	T kInf = numeric_limits<T>::max();
+	RMQ() {}
+  	RMQ(const vector<T>& V) {
+		int n = V.size(), on = 1, dep = 1;
+  	  	while (on < n) on *= 2, ++dep;
+  	  	rmq.assign(dep, V);
+  	  	for (int i = 0; i < dep - 1; ++i) {
+			for (int j = 0; j < n; ++j) {
+  	    	  rmq[i + 1][j] = min(rmq[i][j], rmq[i][min(n - 1, j + (1 << i))]);
+  	    	}
+		}
+  	}
+  	T query(int a, int b) { // [a, b)
+		if (b <= a) return kInf;
+  	  	int dep = 31 - __builtin_clz(b - a); // log(b - a)
+  	  	return min(rmq[dep][a], rmq[dep][b - (1 << dep)]);
+  	}
 };
 
 endsnippet

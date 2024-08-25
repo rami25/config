@@ -1,6 +1,10 @@
+alias nf='~/cpp_template.sh'
+alias nw='cp ~/bin/t1.cpp'
+alias nd='cp ~/bin/td.cpp'
 alias mk='cp ~/.config/nvim/Makefile "$(pwd)"/'
 alias rmk='rm Makefile'
-alias nw='cp ~/bin/template.cpp'
+alias db='cp ~/bin/debug.h "$(pwd)"/'
+alias rdb='rm debug.h'
 alias vim='nvim'
 alias run='python3'
 # ~/.bashrc: executed by bash(1) for non-login shells.
